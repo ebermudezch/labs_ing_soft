@@ -1,6 +1,15 @@
 <template>
   <div class = "container mt-5">
     <h1 class= "display-4 text-center">Lista de países </h1>
+    <div class="row justify-content-end">
+      <div class="col-2">
+        <a href="country">
+          <button type = "button" class="btn btn-outline-secondary float-right">
+            Agregar país
+          </button>
+        </a>
+      </div>
+    </div>
     <table
       class="table is-bordered is-striped is-narrow is-hoverable
       is-fullwidth"
@@ -35,27 +44,36 @@
 </template>
 
 <script>
-  export default {
+import axios from "axios";
+export default {
     name: "CountriesList",
-    data(){
-      return{
-        countries: [
-          { name: "Costa Rica", continent: "América", language: "Español" },
-          { name: "Japón", continent: "Asia", language: "Japonés" },
-          { name: "Corea del Sur", continent: "Asia", language: "Coreano"},
-          { name: "Italia", continent: "Europa", language: "Italiano"},
-          { name: "Alemania", continent: "Europa", language: "Alemán"},
-        ],
-      };
+    data() {
+        return {
+            countries: [
+                { name: "Costa Rica", continent: "América", language: "Español" },
+                { name: "Japón", continent: "Asia", language: "Japonés" },
+                { name: "Corea del Sur", continent: "Asia", language: "Coreano" },
+                { name: "Italia", continent: "Europa", language: "Italiano" },
+                { name: "Alemania", continent: "Europa", language: "Alemán" },
+            ],
+        };
     },
     methods: {
-      // El método splice elimina n elementos en ese índice
-      // (si se usara 2, se elimina el actual y el sig)
-      deleteCountry(index) {
-        this.countries.splice(index, 1);
-      }
+        // El método splice elimina n elementos en ese índice
+        // (si se usara 2, se elimina el actual y el sig)
+        deleteCountry(index) {
+            this.countries.splice(index, 1);
+        },
+        getCountries() {
+            axios.get("http://localhost:5221/api/country").then((response) => {
+                this.countries = response.data;
+            });
+        },
     },
-  }
+    created: function () {
+        this.getCountries();
+    },
+};
 </script>
 
 <style lang="scss" scoped></style>
